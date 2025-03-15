@@ -57,7 +57,7 @@
   async function handleRegister() {
     try {
       await $fetch('/auth/register', {
-        baseURL: 'http://localhost:4500',
+        baseURL: API_BASE,
         method: 'POST',
         body: {
           name: name.value,

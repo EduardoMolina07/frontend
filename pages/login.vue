@@ -30,7 +30,7 @@
       </form>
       <p class="mt-4 text-sm text-center">
         ¿No tienes cuenta?
-        <NuxtLink to="/register" class="text-blue-400">Regístrate aquí</NuxtLink>
+        <NuxtLink to="/register" class="text-blue-500">Regístrate aquí</NuxtLink>
       </p>
     </div>
   </div>

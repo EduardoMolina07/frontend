@@ -1,18 +1,13 @@
-import { defineNuxtRouteMiddleware, navigateTo } from '#imports'
-import { useAuth } from '~/composables/useAuth'
-
 export default defineNuxtRouteMiddleware((to, from) => {
   const { token } = useAuth()
 
-  // Caso A: NO hay token => permitir solo /login y /register
-  if (!token.value) {
-    if (to.path !== '/login' && to.path !== '/register') {
-      return navigateTo('/login')
-    }
-  } else {
-    // Caso B: SÍ hay token => bloquear /login y /register
-    if (to.path === '/login' || to.path === '/register') {
-      return navigateTo('/')
-    }
+  // 1) Si NO hay token y NO voy a /login ni /register => me manda a /login
+  if (!token.value && to.path !== '/login' && to.path !== '/register') {
+    return navigateTo('/login')
+  }
+
+  // 2) Si SÍ hay token y estoy intentando ir a /login o /register => me manda a /
+  if (token.value && (to.path === '/login' || to.path === '/register')) {
+    return navigateTo('/')
   }
 })
