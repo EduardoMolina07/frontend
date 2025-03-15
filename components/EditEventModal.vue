@@ -77,7 +77,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['close', 'updated'])
 
-// Importamos token para enviar en la petición PUT
+// Importamos token para enviar en la petición PUT p causa
 const { token } = useAuth()
 
 // Variables locales para los campos
@@ -86,7 +86,7 @@ const editedDescription = ref('')
 const editedDate = ref('')
 const editedLocation = ref('')
 
-// Rellenar los campos cuando eventToEdit cambia
+// Rellenar los campos cuando eventToEdit cambia de momento 
 watch(
   () => props.eventToEdit,
   (newVal) => {
@@ -109,7 +109,7 @@ async function handleSubmit() {
   try {
     await $fetch(`/events/${props.eventToEdit.id}`, {
       method: 'PUT',
-      baseURL: 'http://localhost:4500',
+      baseURL: API_BASE ,
       headers: {
         Authorization: `Bearer ${token.value}`
       },
