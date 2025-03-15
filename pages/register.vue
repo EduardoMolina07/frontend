@@ -47,13 +47,13 @@
   
   <script setup lang="ts">
   import { ref } from 'vue'
-  import { useRouter } from '#imports'
+  import { useRouter, useRuntimeConfig } from '#imports'
   // No composable de register, haremos fetch directo
+  const router = useRouter()
+  const { public: { API_BASE } } = useRuntimeConfig()
   const name = ref('')
   const email = ref('')
   const password = ref('')
-  const router = useRouter()
-  
   async function handleRegister() {
     try {
       await $fetch('/auth/register', {
