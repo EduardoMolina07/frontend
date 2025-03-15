@@ -62,16 +62,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useEvents } from '~/composables/useEvents'
-import { useRouter } from '#imports'
+import { useRouter, useRuntimeConfig } from '#imports'
 import EditEventModal from '~/components/EditEventModal.vue'
 import DeleteEventModal from '~/components/DeleteEventModal.vue'
 import { useAuth } from '~/composables/useAuth'
 
 const { events, fetchEvents } = useEvents()
 const router = useRouter()
-
-// Para autenticación
 const { token } = useAuth()
+
+// 1) Obtenemos la variable API_BASE
+const { public: { API_BASE } } = useRuntimeConfig()
 
 onMounted(() => {
   fetchEvents()
@@ -92,12 +93,11 @@ function goBack() {
   router.push('/')
 }
 
-// Modal de edición
+// -- Modal de edición
 const showEditModal = ref(false)
 const eventToEdit = ref<any>(null)
 
 function openEditModal(event: any) {
-  console.log('Abriendo modal para:', event)
   eventToEdit.value = { ...event }
   showEditModal.value = true
 }
@@ -111,7 +111,7 @@ function handleEventUpdated() {
   closeEditModal()
 }
 
-// Modal de eliminación
+// -- Modal de eliminación
 const showDeleteModal = ref(false)
 const eventIdToDelete = ref<number | null>(null)
 
@@ -126,10 +126,11 @@ function closeDeleteModal() {
 }
 
 async function handleDeleteConfirmed() {
-  if (eventIdToDelete.value === null) return;
+  if (eventIdToDelete.value === null) return
   try {
     await $fetch(`/events/${eventIdToDelete.value}`, {
       method: 'DELETE',
+      // 2) Usamos la baseURL con API_BASE
       baseURL: API_BASE,
       headers: {
         Authorization: `Bearer ${token.value}`

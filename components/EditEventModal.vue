@@ -69,6 +69,9 @@
 import { defineProps, defineEmits, ref, watch } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 
+// 1) Importamos useRuntimeConfig para leer API_BASE
+import { useRuntimeConfig } from '#imports'
+
 const props = defineProps({
   eventToEdit: {
     type: Object,
@@ -77,8 +80,10 @@ const props = defineProps({
 })
 const emit = defineEmits(['close', 'updated'])
 
-// Importamos token para enviar en la petición PUT p causa
 const { token } = useAuth()
+
+// 2) Obtenemos API_BASE de runtimeConfig.public
+const { public: { API_BASE } } = useRuntimeConfig()
 
 // Variables locales para los campos
 const editedTitle = ref('')
@@ -86,7 +91,7 @@ const editedDescription = ref('')
 const editedDate = ref('')
 const editedLocation = ref('')
 
-// Rellenar los campos cuando eventToEdit cambia de momento 
+// Rellenar los campos cuando eventToEdit cambia
 watch(
   () => props.eventToEdit,
   (newVal) => {
@@ -109,7 +114,8 @@ async function handleSubmit() {
   try {
     await $fetch(`/events/${props.eventToEdit.id}`, {
       method: 'PUT',
-      baseURL: API_BASE ,
+      // 3) Usamos la baseURL con API_BASE
+      baseURL: API_BASE,
       headers: {
         Authorization: `Bearer ${token.value}`
       },
