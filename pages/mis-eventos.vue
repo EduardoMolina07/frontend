@@ -130,7 +130,7 @@ async function handleDeleteConfirmed() {
   try {
     await $fetch(`/events/${eventIdToDelete.value}`, {
       method: 'DELETE',
-      baseURL: 'http://localhost:4500',
+      baseURL: API_BASE,
       headers: {
         Authorization: `Bearer ${token.value}`
       }
